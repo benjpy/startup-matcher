@@ -1,0 +1,97 @@
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+}
+
+.filter-bar {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-bar .button-link {
+    margin: 5px;
+    padding: 8px 12px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-bar .button-link:hover {
+    background-color: #004d99;
+}
+
+.active-filter {
+    border: 2px solid #000; /* Highlight the active filter */
+    padding: 6px 10px; /* Adjust padding to account for the border */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.button-link:hover {
+    background-color: #004d99;
+}
+
+/* Decision Colors */
+.decision-pass {
+    color: #f44336; /* Red */
+    font-weight: bold;
+}
+
+.decision-interested {
+    color: #ff9800; /* Orange */
+    font-weight: bold;
+}
+
+.decision-meet {
+    color: #4caf50; /* Green */
+    font-weight: bold;
+}
+
+.decision-none {
+    color: #888; /* Grey */
+    font-weight: bold;
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profile</title>    
+</head>
+<body>
+    <div class="container">
+
+        {% if request.args.get('refreshed') == 'true' %}
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center; border-radius: 4px; margin-bottom: 20px;">
+                List refreshed - {{ request.args.get('new') }} new startups included.
+            </div>
+        {% endif %}
+
+        <h2>#{{ startup["Order"] }} | {{ startup["Company Name"] }}</h2>
+      
+        <h4>{{ startup["Investment Goal"] }} - Raising {{ startup["Seeking Upgrade"] }} - {{ startup["HQ Country"] }}</h4>
+
+        <hr>
+
+    <!-- Action Buttons -->
+    <form action="/decision" method="post" style="text-align: center; margin-bottom: 10px;">
+        <input type="hidden" name="Order" value="{{ startup['Order'] }}">
+        <button type="submit" class="btn-pass" name="action" value="Pass" style="margin: 0 5px;">Pass</button>
+        <button type="submit" class="btn-interested" name="action" value="Maybe" style="margin: 0 5px;">Maybe</button>
+        <button type="submit" class="btn-meet" name="action" value="Saved" style="margin: 0 5px;">Save</button>
+    </form>
+
+    <!-- Bottom Buttons -->
+    <div style="text-align: center; margin-bottom: 10px;">
+        <!-- List Button -->
+        <form action="/complete-list" method="get" style="display: inline-block;">
+            <button type="submit" class="button-link navigation-button">My List</button>
+        </form>
+
+        <!-- Reload Button -->
+        <form action="/refresh" method="get" style="display: inline-block;">
+            <input type="hidden" name="origin" value="index">
+            <button type="submit" class="button-link">Refresh List</button>
+        </form>
+
+        <!-- Download CSV Button -->
+        <form action="/download-csv" method="get" style="display: inline-block;">
+            <button type="submit" class="button-link">Download List</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <p><strong>Description:</strong> {{ startup["Company introduction (max. 300 characters / 40 words)"] }}</p>
+
+    <hr>
+
+    <!-- Centered Buttons -->
+    <div style="text-align: center; margin-bottom: 10px;">
+        <div class="button-container" style="margin-bottom: 10px;">
+            <a href="{{ startup['Company URL'] }}" class="button-link" target="_blank">Website</a>
+            {% if startup.get("Pitch Deck") %}
+            <!-- Active Pitch Deck button with a link -->
+            <a href="{{ startup['Pitch Deck'] }}" class="button-link" target="_blank">Deck</a>
+        {% else %}
+            <!-- Inactive Pitch Deck button (light grey, no link) -->
+            <span class="button-link inactive-button">Deck</span>
+        {% endif %}
+            {% if startup["Book Meeting on Grip"] %}
+                <a href="{{ startup['Book Meeting on Grip'] }}" class="button-link" target="_blank">Book on Platform</a>
+            {% endif %}
+            {% if startup.get("Book Meeting on Calendly") %}
+                <!-- Active Calendly button with a link -->
+                <a href="{{ startup['Book Meeting on Calendly'] }}" class="button-link" target="_blank">Calendly</a>
+            {% else %}
+                <!-- Inactive Calendly button (light grey, no link) -->
+                <span class="button-link inactive-button">Calendly</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+
+    <div style="display: flex; justify-content: center; text-align: center; gap: 20px; margin-top: 0px;">
+        <div style="flex: 1;">
+            <h4>Sectors</h4>
+            <p>
+                {% for category in startup["Categories (max 3)"].split(',') %}
+                    {{ category.strip() }}<br>
+                {% endfor %}
+            </p>
+        </div>
+        <div style="flex: 1;">
+            <h4>Categories</h4>
+            <p>
+                {% for category in startup["Sub-Categories (max 3)"].split(',') %}
+                    {{ category.strip() }}<br>
+                {% endfor %}
+            </p>
+        </div>
+        <div style="flex: 1;">
+            <h4>Software-Only</h4>
+            <p>{{ startup["Is your product software-only?"] }}</p>
+        </div>
+    </div>
+
+        <hr>
+
+        {% if startup["Team Intro (background, size... max 300. char / 40 words - optional)"] %}
+            <p><strong>Team Intro:</strong> {{ startup["Team Intro (background, size... max 300. char / 40 words - optional)"] }}</p>
+        {% endif %}
+
+        {% if startup["Highlights (e.g. 2-3 notable points on traction, tech - max 300. char / 40 words - optional)"] %}
+            <p><strong>Highlights:</strong> {{ startup["Highlights (e.g. 2-3 notable points on traction, tech - max 300. char / 40 words - optional)"] }}</p>
+        {% endif %}
+
+        <hr>
+
+        <div style="display: flex; justify-content: center; text-align: center; gap: 20px; margin-top: 0px;">
+            <div style="flex: 1;">
+                <p><h4>Dilutive Funding (USD)</h4> 
+                    <p>
+                        {{ startup["Dilutive funding so far in USD"] }}
+                    </p>
+            </div>
+            <div style="flex: 1;">
+                <p><h4>Non-Dilutive (USD)</h4>
+                    <p>
+                        {{ startup["Non-dilutive funding so far in USD"] }}
+                    </p>
+            </div>
+            <div style="flex: 1;">
+                <p><h4>Lead Secured</h4>
+                    <p>
+                        {{ startup["Lead Secured"] }}
+                    </p>
+            </div>
+        </div>
+
+        {% if startup["Notable investors in your company (max 5 - optional)"] %}
+            <p><strong>Notable Investors:</strong> {{ startup["Notable investors in your company (max 5 - optional)"] }}</p>
+        {% endif %}    
+
+        <hr>
+        <br>
+
+
+
+    <!-- Action Buttons -->
+    <form action="/decision" method="post" style="text-align: center; margin-bottom: 10px;">
+        <input type="hidden" name="Order" value="{{ startup['Order'] }}">
+        <button type="submit" class="btn-pass" name="action" value="Pass" style="margin: 0 5px;">Pass</button>
+        <button type="submit" class="btn-interested" name="action" value="Interested" style="margin: 0 5px;">Maybe</button>
+        <button type="submit" class="btn-meet" name="action" value="Meet" style="margin: 0 5px;">Save</button>
+    </form>
+
+    </div>
+</body>
+</html>

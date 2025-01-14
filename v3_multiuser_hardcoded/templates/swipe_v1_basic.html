@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Startups</title>
+</head>
+<body>
+    <h1>Startup Profile</h1>
+    <h2>{{ startup["Name"] }}</h2>
+    <p>{{ startup["Description"] }}</p>
+    <a href="{{ startup['Website'] }}" target="_blank">Visit Website</a>
+
+    <form action="/decision" method="post">
+        <input type="hidden" name="id" value="{{ startup['ID'] }}">
+        <button type="submit" name="action" value="Interested">Interested</button>
+        <button type="submit" name="action" value="Pass">Pass</button>
+        <button type="submit" name="action" value="Meet">Meet</button>
+    </form>
+</body>
+</html>

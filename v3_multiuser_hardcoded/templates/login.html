@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOSV Women's Health Matchup - Login (beta)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center;">SOSV Women's Health Matchup 2025</div>
+        <h1>Login (beta)</h1>
+        
+        <form action="/login" method="POST" style="max-width: 400px; margin: 20px auto;">
+            <!-- Email Input -->
+            <div style="margin-bottom: 15px;">
+                <label for="email" style="display: block; font-weight: bold; color: #444;">Email:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="input-field" 
+                    placeholder="Enter your email" 
+                    required
+                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;"
+                >
+            </div>
+
+            <!-- User ID Input -->
+            <div style="margin-bottom: 15px;">
+                <label for="user_id" style="display: block; font-weight: bold; color: #444;">User ID:</label>
+                <input 
+                    type="text" 
+                    id="user_id" 
+                    name="user_id" 
+                    class="input-field" 
+                    placeholder="Enter your user ID" 
+                    required
+                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;"
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <div style="text-align: center;">
+                <button type="submit" class="button-link navigation-button" style="width: 100%; padding: 12px 18px;">
+                    Login
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

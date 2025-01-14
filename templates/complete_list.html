@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startups</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+
+        {% if request.args.get('refreshed') == 'true' %}
+        <div style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center; border-radius: 4px; margin-bottom: 20px;">
+            List refreshed - {{ request.args.get('new') or 0 }} new startups included.
+        </div>
+        {% endif %}
+
+        
+        <!-- Back to Swipe and Download Buttons -->
+        <div style="text-align: center; margin-top: 20px;">
+            <!-- Back to Swipe Button -->
+            <a href="{{ back_to_swipe_url }}" class="button-link navigation-button">Back to Swipe</a>
+
+            <form action="/refresh" method="get" style="display: inline-block;">
+                <input type="hidden" name="origin" value="complete_list">
+                <input type="hidden" name="filter" value="{{ decision_filter or '' }}"> <!-- Default to empty string -->
+                <button type="submit" class="button-link">Refresh List</button>
+            </form>
+
+            <!-- Download CSV Button -->
+            <form action="/download-csv" method="get" style="display: inline-block;">
+                <button type="submit" class="button-link">Download List</button>
+            </form>
+        </div>
+
+        <br>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <a href="/complete-list" class="button-link {% if not decision_filter %}active-filter{% endif %}">Show All</a>
+            <a href="/complete-list?filter=Pending" class="button-link decision-none {% if decision_filter == 'Pending' %}active-filter{% endif %}">Pending</a>
+            <a href="/complete-list?filter=Maybe" class="button-link decision-interested {% if decision_filter == 'Maybe' %}active-filter{% endif %}">Maybe</a>
+            <a href="/complete-list?filter=Saved" class="button-link decision-meet {% if decision_filter == 'Saved' %}active-filter{% endif %}">Saved</a>
+            <a href="/complete-list?filter=Pass" class="button-link decision-pass {% if decision_filter == 'Pass' %}active-filter{% endif %}">Pass</a>
+        </div>
+
+        <!-- Startup Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Choice</th>
+                    <th>Name</th>
+                    <th style="text-align: center;">Web</th>
+                    <th style="text-align: center;">Deck</th>
+                    <th style="text-align: center;">Meet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for startup in complete_startups %}
+                    <tr>
+                        <td>{{ startup.order }}</td>
+                        <td>
+                            {% if startup.decision == "Pass" %}
+                                <a href="{{ startup.selection_url }}" class="button-link decision-pass">Pass</a>
+                            {% elif startup.decision == "Maybe" %}
+                                <a href="{{ startup.selection_url }}" class="button-link decision-interested">Maybe</a>
+                            {% elif startup.decision == "Saved" %}
+                                <a href="{{ startup.selection_url }}" class="button-link decision-meet">Saved</a>
+                            {% else %}
+                                <a href="{{ startup.selection_url }}" class="button-link decision-none">Pending</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ startup.selection_url }}">{{ startup.name }}</a>
+                        </td>
+                        <td style="text-align: center;">
+                            {% if startup.website %}
+                                <a href="{{ startup.website }}" class="button-link navigation-button" target="_blank">Web</a>
+                            {% else %}
+                                <span style="color: #888;">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            {% if startup.pitch_deck %}
+                                <a href="{{ startup.pitch_deck }}" class="button-link navigation-button" target="_blank">Deck</a>
+                            {% else %}
+                                <span style="color: #888;">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            {% if startup.calendly %}
+                                <a href="{{ startup.calendly }}" class="button-link navigation-button" target="_blank">Meet</a>
+                            {% else %}
+                                <span style="color: #888;">N/A</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Navigation Buttons -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/" class="button-link navigation-button">Continue Selection</a>
+        </div>
+    </div>
+</body>
+</html>

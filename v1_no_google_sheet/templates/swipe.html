@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profile</title>
+</head>
+<body>
+    <h1>Startup Profile</h1>
+
+    <h2>{{ startup["Company Name"] }}</h2>
+    <p><a href="{{ startup['Company URL'] }}" target="_blank">{{ startup["Company URL"] }}</a></p>
+    
+    <p><strong>HQ Country:</strong> {{ startup["HQ Country"] }}</p>
+
+    <p><strong>Categories:</strong> {{ startup["Categories (max 3)"] | truncatewords(3, '...') }}</p>
+    <p><strong>Sub-Categories:</strong> {{ startup["Sub-Categories (max 3)"] | truncatewords(3, '...') }}</p>
+
+    <p><strong>Software-Only Product:</strong> {{ startup["Is your product software-only?"] }}</p>
+
+    <p><strong>Investment Goal:</strong> {{ startup["Investment Goal"] }}</p>
+    <p><strong>Specific Target Raise in USD:</strong> {{ startup["Specific target raise in USD (e.g. 1200000)"] }}</p>
+    <p><strong>Looking for Lead Investor:</strong> {{ startup["Are you looking for a lead investor?"] }}</p>
+    <p><strong>Dilutive Funding So Far (USD):</strong> {{ startup["Dilutive funding so far in USD"] }}</p>
+    <p><strong>Non-Dilutive Funding So Far (USD):</strong> {{ startup["Non-dilutive funding so far in USD"] }}</p>
+
+    {% if startup["Notable investors in your company (max 5 - optional)"] %}
+        <p><strong>Notable Investors:</strong> {{ startup["Notable investors in your company (max 5 - optional)"] }}</p>
+    {% endif %}
+
+    {% if startup["Team Intro (background, size... max 300. char / 40 words - optional)"] %}
+        <p><strong>Team Intro:</strong> {{ startup["Team Intro (background, size... max 300. char / 40 words - optional)"] }}</p>
+    {% endif %}
+
+    {% if startup["Highlights (e.g. 2-3 notable points on traction, tech - max 300. char / 40 words - optional)"] %}
+        <p><strong>Highlights:</strong> {{ startup["Highlights (e.g. 2-3 notable points on traction, tech - max 300. char / 40 words - optional)"] }}</p>
+    {% endif %}
+
+    {% if startup["Book Meeting on Grip"] %}
+        <p><a href="{{ startup['Book Meeting on Grip'] }}" target="_blank">Book Meeting on Grip</a></p>
+    {% endif %}
+    {% if startup["Book Meeting on Calendly"] %}
+        <p><a href="{{ startup['Book Meeting on Calendly'] }}" target="_blank">Book Meeting on Calendly</a></p>
+    {% endif %}
+    {% if startup["Pitch Deck"] %}
+        <p><a href="{{ startup['Pitch Deck'] }}" target="_blank">View Pitch Deck</a></p>
+    {% endif %}
+
+    <form action="/decision" method="post">
+        <input type="hidden" name="id" value="{{ startup['ID'] }}">
+        <button type="submit" name="action" value="Interested">Interested</button>
+        <button type="submit" name="action" value="Pass">Pass</button>
+        <button type="submit" name="action" value="Meet">Meet</button>
+    </form>
+</body>
+</html>
