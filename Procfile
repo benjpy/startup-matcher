@@ -1,1 +1,1 @@
-web: python StartupMatcher.py
+web: python3 StartupMatcher.py
