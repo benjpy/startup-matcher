@@ -3,8 +3,6 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file, make_response
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
-import base64
-import json
 
 # Website
 # http://127.0.0.1:5000
@@ -37,50 +35,26 @@ GOOGLE_CLOUD_SERVICE_ACCOUNT_EMAIL = "startupmatcher-service-account@startupmatc
 # Initialize the user database
 USER_DATABASE = {}
 
-# Load Service Account Credentials from Environment Variable
-def get_service_account_credentials():
-    """Decode the Base64 service account JSON and return the credentials."""
-    try:
-        # Read the base64-encoded file
-        with open("service-account.json.base64", "r") as file:
-            service_account_base64 = file.read().strip()
-
-        # Decode the Base64 string
-        service_account_json = base64.b64decode(service_account_base64).decode("utf-8")
-
-        # Parse the JSON string into a dictionary
-        service_account_info = json.loads(service_account_json)
-
-        # Authenticate using the service account info
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        return ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
-
-    except Exception as e:
-        raise ValueError(f"Failed to load service account credentials: {e}")
-
-creds = get_service_account_credentials()
-client = gspread.authorize(creds)
 
 def load_users_from_sheet():
     global USER_DATABASE
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds_file = get_service_account_credentials()
-        creds = get_service_account_credentials()
+        creds = ServiceAccountCredentials.from_json_keyfile_name("service-account.json", scope)
         client = gspread.authorize(creds)
 
         # Open the sheet and fetch data from the "IDs" tab
         sheet = client.open_by_url(GOOGLE_SHEET_URL_USERS).worksheet("IDs")
         records = sheet.get_all_records()
-
+        
         USER_DATABASE = {
             record["ID"]: {"email": record["Email"]}
             for record in records
             if record.get("ID") and record.get("Email")
         }
 
+        # Debugging check of users loaded
         print(f"Loaded {len(USER_DATABASE)} users from Google Sheet.")
-        print("Loaded USER_DATABASE:", USER_DATABASE)
 
     except Exception as e:
         print(f"Error loading users from Google Sheet: {e}")
@@ -91,8 +65,7 @@ def export_google_sheet_to_csv():
     """Fetch data from Google Sheets and export it to a local CSV file."""
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds_file = get_service_account_credentials()
-        creds = get_service_account_credentials()
+        creds = ServiceAccountCredentials.from_json_keyfile_name("service-account.json", scope)
         client = gspread.authorize(creds)
 
         # Open the sheet and fetch data
