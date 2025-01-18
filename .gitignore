@@ -1,3 +1,4 @@
 service-account.json
 v2_single_user/service-account.json
 service-account.json.base64
+venv/
