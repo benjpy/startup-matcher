@@ -8,7 +8,12 @@
 </head>
 
 <body>
+ 
     <div class="container">
+
+        <div style="text-align: center; margin-bottom: 4px;">
+            <img src="{{ url_for('static', filename='banner.png') }}" alt="Banner" style="max-width: 100%; height: auto;">
+        </div>
 
         {% if request.args.get('refreshed') == 'true' %}
         <div style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center; border-radius: 4px; margin-bottom: 20px;">
@@ -16,29 +21,31 @@
         </div>
         {% endif %}
 
+
+                <!-- Buttons Top -->
+                <div style="text-align: center; margin-bottom: 5px;">
         
-        <!-- Back to Swipe and Download Buttons -->
-        <div style="text-align: center; margin-top: 20px;">
-            <!-- Back to Swipe Button -->
-            <a href="{{ back_to_swipe_url }}" class="button-link navigation-button">Back to Swipe</a>
+                    <!-- List Button -->
+                    <a href="{{ back_to_swipe_url }}" class="navigation-button" 
+                    style="text-align: center;">Back</a>
+             
+                    <!-- Reload Button -->
+                    <form action="/refresh" method="get" style="margin: 0 0px; display: inline-block;">
+                        <input type="hidden" name="origin" value="index">
+                        <button type="submit" class="button-link">Refresh</button>
+                    </form>
+                
+                    <!-- Download CSV Button -->
+                    <form action="/download-csv" method="get" style="margin: 0 0px; display: inline-block;">
+                        <button type="submit" class="button-link">Download</button>
+                    </form>
+                </div>
 
-            <form action="/refresh" method="get" style="display: inline-block;">
-                <input type="hidden" name="origin" value="complete_list">
-                <input type="hidden" name="filter" value="{{ decision_filter or '' }}"> <!-- Default to empty string -->
-                <button type="submit" class="button-link">Refresh List</button>
-            </form>
-
-            <!-- Download CSV Button -->
-            <form action="/download-csv" method="get" style="display: inline-block;">
-                <button type="submit" class="button-link">Download List</button>
-            </form>
-        </div>
-
-        <br>
+        <hr>
 
         <!-- Filter Bar -->
         <div class="filter-bar">
-            <a href="/complete-list" class="button-link {% if not decision_filter %}active-filter{% endif %}">Show All</a>
+            <a href="/complete-list" class="button-link {% if not decision_filter %}active-filter{% endif %}">All</a>
             <a href="/complete-list?filter=Pending" class="button-link decision-none {% if decision_filter == 'Pending' %}active-filter{% endif %}">Pending</a>
             <a href="/complete-list?filter=Maybe" class="button-link decision-interested {% if decision_filter == 'Maybe' %}active-filter{% endif %}">Maybe</a>
             <a href="/complete-list?filter=Saved" class="button-link decision-meet {% if decision_filter == 'Saved' %}active-filter{% endif %}">Saved</a>
@@ -77,23 +84,23 @@
                         </td>
                         <td style="text-align: center;">
                             {% if startup.website %}
-                                <a href="{{ startup.website }}" class="button-link navigation-button" target="_blank">Web</a>
+                                <a href="{{ startup.website }}" class="button-link table-button" target="_blank">🌐</a>
                             {% else %}
-                                <span style="color: #888;">N/A</span>
+                                <span style="color: #888;">🚫</span>
                             {% endif %}
                         </td>
                         <td style="text-align: center;">
                             {% if startup.pitch_deck %}
-                                <a href="{{ startup.pitch_deck }}" class="button-link navigation-button" target="_blank">Deck</a>
+                                <a href="{{ startup.pitch_deck }}" class="button-link table-button" target="_blank">📑</a>
                             {% else %}
-                                <span style="color: #888;">N/A</span>
+                                <span style="color: #888;">🚫</span>
                             {% endif %}
                         </td>
                         <td style="text-align: center;">
                             {% if startup.calendly %}
-                                <a href="{{ startup.calendly }}" class="button-link navigation-button" target="_blank">Meet</a>
+                                <a href="{{ startup.calendly }}" class="button-link table-button" target="_blank">🤝</a>
                             {% else %}
-                                <span style="color: #888;">N/A</span>
+                                <span style="color: #888;">🚫</span>
                             {% endif %}
                         </td>
                     </tr>

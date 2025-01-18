@@ -7,26 +7,51 @@
     <title>Startup Profile</title>    
 </head>
 <body>
+
     <div class="container">
+        <div style="text-align: center; margin-bottom: 4px;">
+            <img src="{{ url_for('static', filename='banner.png') }}" alt="Banner" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <!-- Buttons Top -->
+        <div style="text-align: center; margin-bottom: 5px;">
+        
+            <!-- List Button -->
+            <form action="/complete-list" method="get" style="margin: 0 0px; display: inline-block;">
+                <button type="submit" class="button-link navigation-button">My List</button>
+            </form>
+        
+            <!-- Reload Button -->
+            <form action="/refresh" method="get" style="margin: 0 0px; display: inline-block;">
+                <input type="hidden" name="origin" value="index">
+                <button type="submit" class="button-link">Refresh</button>
+            </form>
+        
+            <!-- Download CSV Button -->
+            <form action="/download-csv" method="get" style="margin: 0 0px; display: inline-block;">
+                <button type="submit" class="button-link">Download</button>
+            </form>
+        </div>
+
+    <hr>
 
         {% if request.args.get('refreshed') == 'true' %}
-            <div style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center; border-radius: 4px; margin-bottom: 20px;">
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center; border-radius: 4px;">
                 List refreshed - {{ request.args.get('new') or 0 }} new startups included.
             </div>
         {% endif %}
 
-        <h2>#{{ startup.get("Order", "N/A") }} | {{ startup.get("Company", "Unknown") }}</h2>
-      
-        <h4>
-            Raising {{ startup.get("Stage", "N/A") }} 
-            {% if startup.get("Raising") %}
-                ({{ startup.get("Raising") }})
+        <h3>#{{ startup.get("Order", "N/A") }} | {{ startup.get("Company", "Unknown") }}
+            <br>
+            Raising {% if startup.get("Raising") %}
+            {{ startup.get("Raising") }}
             {% endif %}
+        ({{ startup.get("Stage", "N/A") }}) 
             - {{ startup.get("Country", "N/A") }}
-        </h4>
+        </h3>
 
         <!-- Centered Hashtags -->
-        <div style="text-align: center; margin: 20px 0;">
+        <div style="text-align: center; margin: 10px 0;">
             {% for category in startup.get("Tags", "").split(',') if category.strip() %}
                 <span class="hashtag">{{ category.strip() }}</span>
             {% endfor %}
@@ -35,7 +60,7 @@
         <hr>
 
         <!-- Action Buttons -->
-        <form action="/decision" method="post" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+        <form action="/decision" method="post" style="display: flex; justify-content: center; gap: 4px; margin-bottom: 0px;">
             <input type="hidden" name="Order" value="{{ startup.get('Order', '') }}">
             <button type="submit" class="btn-pass" name="action" value="Pass">Pass</button>
             <button type="submit" class="btn-interested" name="action" value="Maybe">Maybe</button>
@@ -47,25 +72,6 @@
                 <span class="button-link inactive-button">Deck</span>
             {% endif %}
         </form>
-
-        <!-- Bottom Buttons -->
-        <div style="text-align: center; margin-bottom: 10px;">
-            <!-- List Button -->
-            <form action="/complete-list" method="get" style="display: inline-block;">
-                <button type="submit" class="button-link navigation-button">My List</button>
-            </form>
-
-            <!-- Reload Button -->
-            <form action="/refresh" method="get" style="display: inline-block;">
-                <input type="hidden" name="origin" value="index">
-                <button type="submit" class="button-link">Refresh List</button>
-            </form>
-
-            <!-- Download CSV Button -->
-            <form action="/download-csv" method="get" style="display: inline-block;">
-                <button type="submit" class="button-link">Download List</button>
-            </form>
-        </div>
 
         <hr>
 
@@ -81,15 +87,16 @@
         <hr>
 
         <!-- Contact Info -->
+        <p>
         <div style="text-align: center; margin-bottom: 10px;">
             {% if startup.get("Contact") %}
-                <p><strong>Contact:</strong> {{ startup.get("Contact") }}</p>
+                <strong>Contact:</strong> {{ startup.get("Contact") }}
             {% endif %}
         </div>
         <!-- Contact Info and Buttons -->
         <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px;">
             {% if startup.get("LinkedIn") %}
-                <a href="{{ startup['LinkedIn'] }}" class="button-link" target="_blank">LinkedIn</a>
+                <a href="{{ startup['LinkedIn'] }}" class="button-link" target="_blank">LinkedIn Profile</a>
             {% endif %}
             {% if startup.get("Grip") %}
                 <a href="{{ startup['Grip'] }}" class="button-link" target="_blank">Book on Platform</a>
@@ -101,7 +108,7 @@
                 <span class="button-link inactive-button">Book via Calendly</span>
             {% endif %}
         </div>
-
+        </p>
         <hr>
 
         <p><strong>Team Intro:</strong> 
@@ -149,14 +156,14 @@
 
         <hr>
         <br>
-
-        <!-- Action Buttons -->
-        <form action="/decision" method="post" style="text-align: center; margin-bottom: 10px;">
-            <input type="hidden" name="Order" value="{{ startup.get('Order', '') }}">
-            <button type="submit" class="btn-pass" name="action" value="Pass" style="margin: 0 5px;">Pass</button>
-            <button type="submit" class="btn-interested" name="action" value="Interested" style="margin: 0 5px;">Maybe</button>
-            <button type="submit" class="btn-meet" name="action" value="Meet" style="margin: 0 5px;">Save</button>
-        </form>
+        <div class="button-container">
+            <form action="/decision" method="post" style="display: flex; justify-content: center; gap: 4px; margin-bottom: 0px;">
+                <input type="hidden" name="Order" value="{{ startup.get('Order', '') }}">
+                <button type="submit" class="btn-pass" name="action" value="Pass">Pass</button>
+                <button type="submit" class="btn-interested" name="action" value="Maybe">Maybe</button>
+                <button type="submit" class="btn-meet" name="action" value="Saved">Save</button>
+            </form>
+        </div>
 
     </div>
 </body>

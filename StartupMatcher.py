@@ -80,7 +80,7 @@ def load_users_from_sheet():
         }
 
         print(f"Loaded {len(USER_DATABASE)} users from Google Sheet.")
-        print("Loaded USER_DATABASE:", USER_DATABASE)
+        # print("Loaded USER_DATABASE:", USER_DATABASE)
 
     except Exception as e:
         print(f"Error loading users from Google Sheet: {e}")
@@ -90,13 +90,11 @@ def load_users_from_sheet():
 def export_google_sheet_to_csv():
     """Fetch data from Google Sheets and export it to a local CSV file."""
     try:
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds_file = get_service_account_credentials()
-        creds = get_service_account_credentials()
+        creds = get_service_account_credentials()  # Credentials from Base64
         client = gspread.authorize(creds)
 
         # Open the sheet and fetch data
-        sheet = client.open_by_url(GOOGLE_SHEET_URL).worksheet("Swiper")  # Changed to "Swiper"
+        sheet = client.open_by_url(GOOGLE_SHEET_URL).worksheet("Swiper")  # Ensure "Swiper" is correct
         records = sheet.get_all_records()
 
         # Write data to local CSV
@@ -104,8 +102,11 @@ def export_google_sheet_to_csv():
             writer = csv.DictWriter(file, fieldnames=records[0].keys())
             writer.writeheader()
             writer.writerows(records)
+
+        print(f"Successfully exported {len(records)} startups to {STARTUPS_CSV}")
+
     except Exception as e:
-        print(f"Error exporting Google Sheet to CSV: {e}")
+        print(f"Error exporting Google Sheet to CSV: {e}. Check your credentials or the Google Sheet URL.")
 
 
 def load_startups():
@@ -119,11 +120,6 @@ def load_startups():
         # print("Loaded startups:")  # Add this line for debugging
         print(f"Loaded {len(STARTUPS_CSV)} profiles from Google Sheet.")
         return records
-    
-            # Debugging check of users loaded
-        
-
-
 
 def get_user_file(user_id):
     """Return the file path for the user's decision file in the selections folder."""
@@ -250,6 +246,7 @@ def complete_list():
     startups = load_startups()
     user_decisions = load_user_decisions(user_id)
 
+    # Filter startups to only include those with an "Order" value
     complete_startups = [
         {
             "order": startup["Order"],
@@ -260,7 +257,7 @@ def complete_list():
             "calendly": startup.get("Calendly", None),
             "selection_url": url_for("startup_selection", Order=startup["Order"])
         }
-        for startup in startups
+        for startup in startups if startup.get("Order")  # Only include startups with "Order"
     ]
 
     if decision_filter:
@@ -342,4 +339,4 @@ def refresh():
 
 if __name__ == "__main__":
     load_users_from_sheet()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)

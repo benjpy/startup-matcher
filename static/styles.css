@@ -29,22 +29,19 @@ strong {
     color: #222;
 }
 
-/* Filter bar styles */
 .filter-bar {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex; /* Use flexbox for horizontal alignment */
+    justify-content: space-evenly; /* Equal spacing between buttons */
+    gap: 5px; /* Optional: Adjust space between buttons */
+    margin-bottom: 20px; /* Add spacing below the filter bar */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .filter-bar .button-link {
-    margin: 5px;
-    padding: 10px 16px;
-    background-color: #0066cc;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 14px;
-    border: none;
-    transition: background-color 0.3s ease;
+    flex: 1; /* Make buttons equally wide */
+    text-align: center; /* Center button text */
+    padding: 10px 5px; /* Adjust padding for better spacing */
+    border-radius: 4px; /* Rounded corners */
 }
 
 .filter-bar .button-link:hover {
@@ -73,10 +70,30 @@ th {
     background-color: #f4f4f4;
 }
 
+/* Table Buttons */
+table td .button-link {
+    padding: 10px 10px 10px 10px; /* Reduce padding for narrower buttons */
+    font-size: 12px; /* Adjust font size */
+    border-radius: 20px; /* Keep corners slightly rounded */
+    text-align: center; /* Center-align text */
+    width: auto; /* Remove any default width */
+}
+
+table td .button-link:hover {
+    background-color: #004d99; /* Slightly darker hover effect */
+}
+
+/* Optional: Add a fixed size for uniformity */
+.table-button {
+    width: 100px; /* Set a consistent width */
+    text-align: center;
+}
+
+
 /* General button styles */
 .button-link, button {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 10px 8px;
     background-color: #0066cc;
     color: white;
     text-decoration: none;
@@ -177,7 +194,7 @@ th {
 
 /* Navigation and utility buttons */
 .navigation-button {
-    margin: 5px;
+    margin: 0px;
     padding: 10px 15px;
     background-color: #4caf50; /* Green background */
     color: white; /* White text */
@@ -187,6 +204,7 @@ th {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    min-width: 70px;
 }
 
 .navigation-button:hover {
@@ -212,7 +230,7 @@ th {
     margin: 5px;
     padding: 5px 10px;
     background-color: #f1f1f1;
-    border-radius: 15px;
+    border-radius: 20px;
     font-size: 14px;
     color: #333;
     text-decoration: none;
@@ -222,4 +240,79 @@ th {
 .hashtag:hover {
     background-color: #e0e0e0;
     cursor: pointer;
+}
+
+/* Ensure buttons in swipe.html are aligned horizontally */
+.button-container form {
+    display: flex; /* Use Flexbox for layout */
+    justify-content: center; /* Center the buttons */
+    gap: 5px; /* Adjust spacing between buttons */
+}
+
+.button-container form button,
+.button-container form a {
+    padding: 8px 16px; /* Adjust padding for consistent button sizes */
+    border-radius: 20px; /* Smooth rounded corners */
+    font-size: 14px; /* Adjust text size */
+    flex-grow: 0; /* Prevent buttons from growing disproportionately */
+    flex-shrink: 0; /* Prevent buttons from shrinking too much */
+}
+
+/* Specific button styles */
+button.btn-pass {
+    background-color: #f44336; /* Red for "Pass" */
+    color: white;
+}
+
+button.btn-pass:hover {
+    background-color: #d32f2f; /* Darker red */
+}
+
+button.btn-interested {
+    background-color: #ff9800; /* Orange for "Maybe" */
+    color: white;
+}
+
+button.btn-interested:hover {
+    background-color: #e68900; /* Darker orange */
+}
+
+button.btn-meet {
+    background-color: #4caf50; /* Green for "Save" */
+    color: white;
+}
+
+button.btn-meet:hover {
+    background-color: #388e3c; /* Darker green */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .button-container form {
+        flex-wrap: wrap; /* Allow buttons to wrap if necessary */
+        justify-content: center; /* Ensure centered alignment */
+        gap: 5px; /* Smaller gaps on mobile */
+    }
+
+    .button-container form button,
+    .button-container form a {
+        flex-grow: 1; /* Allow buttons to stretch evenly */
+        width: calc(33% - 10px); /* Make buttons smaller to fit in one row */
+        margin: 5px 0; /* Add vertical space if they wrap */
+    }
+}
+
+.flex-button {
+    flex: 1; /* Grow, shrink, and share equal space */
+    text-align: center; /* Center the text inside the button */
+    padding: 10px 15px; /* Adjust padding for a balanced look */
+    min-width: 75px; /* Optional: Prevent buttons from getting too small */
+}
+
+.flex-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px;
 }
